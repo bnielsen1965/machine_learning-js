@@ -1,0 +1,30 @@
+{
+  "name": "machine_learning-js",
+  "version": "1.0.0",
+  "description": "This project is a group of experiments in Machine Learning with Javascript.",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": ">=16.20.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bnielsen1965/machine_learning-js.git"
+  },
+  "keywords": [
+    "machine",
+    "learning",
+    "ai",
+    "artificial",
+    "intelligence",
+    "javascript"
+  ],
+  "author": "Bryan Nielsen <bnielsen1965@gmail.com> (https://github.com/bnielsen1965)",
+  "license": "MIT"
+}
