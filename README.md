@@ -354,7 +354,8 @@ function xor (a, b) {
 The function xor() takes the two inputs and uses the three boolean neuron gates to 
 produce an XOR output.
 
-```XOR output based on 3 gate OR, NAND, AND design:
+```
+XOR output based on 3 gate OR, NAND, AND design:
 [ 0 | 0 ] == 0
 [ 0 | 1 ] == 1
 [ 1 | 0 ] == 1
