@@ -84,21 +84,42 @@ Math round method to convert the floating point value into a binary value.
 
 *boolean_neuron.mjs*
 ```javascript
-import { Neuron } from "./neuron.mjs";
 
 export class BooleanNeuron extends Neuron {
+  /*
+  * @constructor
+  * @param {Number[]} inputWeights An array of initial input weights.
+  * @param {Number} bias An initial bias value.
+  * @param {function} [activation=BooleanNeuron.activation] The activation function 
+  *     can be overridden when creating a training neuron that requires a non-sigmoid
+  *     output for error calculations.
+  */
   constructor (inputWeights, bias, activation) {
     super (inputWeights, bias, activation || BooleanNeuron.activation);
   }
 
-  // use round to produce binary values
+  /*
+  * The activation function uses round() to produce boolean values from the sigmoid.
+  * @param {Number} x The sumation of the bias, input and weight calculations.
+  */
   static activation (x) {
     return Math.round(BooleanNeuron.sigmoid(x));
   }
   
-  // squashes x value into the range of 0 to 1 where x = 0 returns 0.5
+  /*
+  * A sigmoid function is used to squash x value into the range of 0 to 1 where x = 0 returns 0.5.
+  * @param {Number} x The value to be squashed into the range from 0 to 1.
+  */
   static sigmoid (x) {
     return 1 / (1 + Math.exp(-1 * x));
+  }
+
+  // export the model definition values
+  getModel () {
+    return {
+      bias: this.bias,
+      weights: this.weights
+    };
   }
 }
 ```
@@ -106,15 +127,16 @@ export class BooleanNeuron extends Neuron {
 This boolean neuron can be trained to produce gate functions for various boolean gate types.
 
 
-## AND Gate Experiment
+## Gate learning experiment in gates.js
 
-Execute the and.js script in NodeJS to try this experiment.
+Execute the gates.js script in NodeJS to try this experiment.
 
-> node and.js
+> node gates.js
 
-A boolean AND gate takes a number of boolean inputs and outputs a boolean true (1) if all the gate 
-inputs are true (1). If any of the gate inputs are false (0) then the output is also false (0).
+The gates.js script has definitions for two input AND, NAND, OR, and NOR logic gates. The 
+logic for each gate are as follows...
 
+AND gate:
 
 | input 1 | input 2 | output
 | --- | --- | --- |
@@ -123,38 +145,55 @@ inputs are true (1). If any of the gate inputs are false (0) then the output is 
 | 1 | 0 | 0 |
 | 1 | 1 | 1 |
 
+NAND gate:
 
-The *and.js* script uses the AND gate data for a two input AND gate to train a boolean neuron to 
-function as an AND gate. When the boolean neuron is first created it is initialized with random 
-weights on the two inputs and a random bias. An activation function is not specified here as it 
-will be automatically assigned in the boolean neuron class constructor. When this new neuron is 
-used to show it's output results before training it will most likely have output failures due to 
-the currently untrained nature (unless the random results are very lucky).
+| input 1 | input 2 | output
+| --- | --- | --- |
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
 
-```javascript
-import { BooleanNeuron } from "./lib/boolean_neuron.mjs";
+OR gate:
 
-// data set for boolean AND gate
-const DataAND = [
-  { inputs: [0, 0], result: 0 },
-  { inputs: [0, 1], result: 0 },
-  { inputs: [1, 0], result: 0 },
-  { inputs: [1, 1], result: 1 }
-];
+| input 1 | input 2 | output
+| --- | --- | --- |
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
 
-// create an untrained random neuron to use as an AND gate
-let andGate = new BooleanNeuron([Math.random(), Math.random()], Math.random());
+NOR gate:
 
-// show random neuron results
-console.log("Untrained neuron output...");
-show(andGate, DataAND);
+| input 1 | input 2 | output
+| --- | --- | --- |
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 0 |
+
+
+These gate definition tables are used to train individual boolean neurons to act as a gate for each 
+of the defined types. When each boolean neuron is first created it is initialized with random 
+weights on the two inputs and a random bias. The untrained neuron is tested against the logic 
+gate data set and the result will more than likely fail.
+
+
+Example output for an untrained neuron...
+```
+Training AND...
+Untrained neuron output:
+In: [ 0 | 0 ] Out: 1,  expected 0 FAILURE
+In: [ 0 | 1 ] Out: 1,  expected 0 FAILURE
+In: [ 1 | 0 ] Out: 1,  expected 0 FAILURE
+In: [ 1 | 1 ] Out: 1,  expected 1 SUCCESS
+
 ```
 
 For the training step a temporariy training boolean neuron is created using the weights and bias 
-values from the initial untrained neuron, but in this case the activation function is specified 
-as the sigmoid function from the boolean neuron class. For the training step we need to avoid 
-converting the neuron output to a binary value to we can calculate the error rate of the neuron's 
-current weight and bias model.
+values from the random untrained neuron. For this training neuron the activation function is specified 
+as the sigmoid function from the boolean neuron class. Training requires the non-boolean output to 
+calculate the error rate of the neuron's current weight and bias model.
 
 The training function is provided with some conditions to assist in the training process. An 
 error target is used to tell the training function when the accuracy is close enough to stop 
@@ -164,26 +203,17 @@ the rate of change applied to the input weights and bias. When training a neuron
 can be adjusted as needed to get the desired results within a reasonable time.
 
 ```javascript
-// create a duplicate training neuron with sigmoid activation so we get linear error results
-let train_neuron = new BooleanNeuron(andGate.weights, andGate.bias, BooleanNeuron.sigmoid);
+// Target acceptable error rate for neuron model
+const ErrorTarget = 0.0001;
 
-console.log("\nTrain neuron...");
-let error_target = 0.0001;
-let max_runs = 400000;
-let learn_rate = 0.1;
-let tweak = 0.001;
+// Maximum number of training runs to try before failure
+const MaxRuns = 400000;
 
-console.log(`Initial neuron error ${calculateError(train_neuron, DataAND)}.`);
-let result = train(train_neuron, DataAND, learn_rate, tweak, max_runs, error_target);
-console.log(`Trained neuron error ${result.error} in ${result.count} training runs.\n`);
+// learning rate applied to input weight to adjust for error
+const LearnRate = 0.1;
 
-// copy trained model values to the untrained neuron
-andGate.weights = train_neuron.weights.slice();
-andGate.bias = train_neuron.bias;
-
-if (!test(andGate, DataAND)) console.log("Training failed, neuron does not produce expected output.");
-console.log("Trained neuron output...");
-show(andGate, DataAND);
+// bias and error rate tweaks applied during training
+const Tweak = 0.001;
 ```
 
 Training of the neuron is dependant on knowing how far off the neuron's model is from producing 
@@ -192,19 +222,19 @@ neuron model and compares the output to the training data set to determine the l
 the current neuron model.
 
 ```javascript
-/*
-* quantify the error in the neuron model compared to training data set
-* @param {Object} neuron The neuron object to train.
-* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
-*/
-function calculateError (neuron, dataSet) {
-  let error_val = 0;
-  for (const row of dataSet) {
-    let y = neuron.model(row.inputs);
-    error_val += Math.pow(y - row.result, 2);
+  /*
+  * quantify the error in the neuron model compared to training data set
+  * @param {Object} neuron The neuron object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  */
+  static calculateError (neuron, dataSet) {
+    let error_val = 0;
+    for (const row of dataSet) {
+      let y = neuron.model(row.inputs);
+      error_val += Math.pow(y - row.result, 2);
+    }
+    return error_val / dataSet.length;
   }
-  return error_val / dataSet.length;
-}
 ```
 
 The training method iterates through multiple adjustments to the neuron's model until the error 
@@ -212,51 +242,122 @@ calculation produces an acceptable error rate or the training steps reaches the 
 iterations.
 
 ```javascript
+  /*
+  * train neuron using data set
+  * @param {Object} neuron The neuron object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  * @param {Number} rate The learn rate used to adjust the weight on an input.
+  * @param {Number} tweak Adjustment applied to the error.
+  * @param {Number} runs The maximum number of training runs to attempt.
+  * @param {Number} target The target error value for the model.
+  */
+  static train (neuron, dataSet, rate, tweak, runs, target) {
+    let error;
+    let count = 0;
+    while (++count < runs) {
+      // get current model error
+      error = BooleanTraining.calculateError(neuron, dataSet);
+      if (isNaN(error)) throw new Error(`Error is NaN!`);
+      // check if error target has been achieved
+      if (error < target) break;
+      // train each input weight
+      let trainWeights = neuron.weights.slice();
+      neuron.weights.forEach((weight, i) => {
+        let weightRecall = weight;
+        neuron.weights[i] += tweak;
+        let weightError = BooleanTraining.calculateError(neuron, dataSet);
+        trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
+        neuron.weights[i] = weightRecall;
+      });
+      // train neuron bias
+      let trainBias = neuron.bias;
+      let biasRecall = neuron.bias;
+      neuron.bias += tweak;
+      let biasError = BooleanTraining.calculateError(neuron, dataSet);
+      trainBias = biasRecall - rate * ((biasError - error) / tweak);
+      neuron.bias = biasRecall;
 
-/*
-* train neuron using data set
-* @param {Object} neuron The neuron object to train.
-* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
-* @param {Number} rate The learn rate used to adjust the weight on an input.
-* @param {Number} tweak Adjustment applied to the error.
-* @param {Number} runs The maximum number of training runs to attempt.
-* @param {Number} target The target error value for the model.
-*/
-function train (neuron, dataSet, rate, tweak, runs, target) {
-  let error;
-  let count = 0;
-  while (++count < runs) {
-    // get current model error
-    error = calculateError(neuron, dataSet);
-    if (isNaN(error)) throw new Error(`Error is NaN!`);
-    // check if error target has been achieved
-    if (error < target) break;
-    // train each input weight
-    let trainWeights = neuron.weights.slice();
-    neuron.weights.forEach((weight, i) => {
-      let weightRecall = weight;
-      neuron.weights[i] += tweak;
-      let weightError = calculateError(neuron, dataSet);
-      trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
-      neuron.weights[i] = weightRecall;
-    });
-    // train neuron bias
-    let trainBias = neuron.bias;
-    let biasRecall = neuron.bias;
-    neuron.bias += tweak;
-    let biasError = calculateError(neuron, dataSet);
-    trainBias = biasRecall - rate * ((biasError - error) / tweak);
-    neuron.bias = biasRecall;
+      // apply training results
+      neuron.weights = trainWeights.slice();
+      neuron.bias = trainBias;
 
-    // apply training results
-    neuron.weights = trainWeights.slice();
-    neuron.bias = trainBias;
-
-    // validate error reduced
-    let adjustError = calculateError(neuron, dataSet);
-    if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
-    error = adjustError;
+      // validate error reduced
+      let adjustError = BooleanTraining.calculateError(neuron, dataSet);
+      if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
+      error = adjustError;
+    }
+    return { error, count };
   }
-  return { error, count };
+```
+
+As each neuron is trained to operate as a logic gate the final results of the training will 
+be displayed and should show success when tested against the gate definition.
+
+```Training AND...
+
+Trained neuron output...
+In: [ 0 | 0 ] Out: 0,  expected 0 SUCCESS
+In: [ 0 | 1 ] Out: 0,  expected 0 SUCCESS
+In: [ 1 | 0 ] Out: 0,  expected 0 SUCCESS
+In: [ 1 | 1 ] Out: 1,  expected 1 SUCCESS
+Neuron Model:
+  bias: -13.202136067669324
+  weights:
+    input 0: 8.743925936900641
+    input 1: 8.743925936900641
+
+```
+
+The results of the training will be stored in a JSON file named gate_models.json 
+which can then be used in other scripts to create trained boolean neurons for 
+use in other functions.
+
+
+## XOR gate from 3 gates in 3gate-xor.js
+
+In an exclusive OR gate the output is 1 (true) only when one of the inputs is 1 (true).
+If you attempt to train a single boolean neuron to act as an XOR logic gate the 
+training will always fail as a single neuron is not capable of representing an XOR gate.
+
+XOR gate:
+
+| input 1 | input 2 | output
+| --- | --- | --- |
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+In boolean algebra, Karnaugh maps, and electronics design, it is common to combine logic gates 
+to create a new logic gate that matches the defined logic. For an XOR gate we can 
+combine a NAND gate, OR gate, and AND gate to create the desired logic.
+
+The two data inputs are supplied to the NAND and OR gates then the output of these two 
+gates is fed into the AND gate inputs. The final output of the AND gate will be the 
+exclusive OR of the A and B inputs.
+
+In code it looks something like this...
+```javascript
+let nandGate = new BooleanNeuron(nandModel.weights, nandModel.bias);
+let orGate = new BooleanNeuron(orModel.weights, orModel.bias);
+let andGate = new BooleanNeuron(andModel.weights, andModel.bias);
+
+// xor function from 3 gates
+function xor (a, b) {
+  let nandOut = nandGate.model([a, b]);
+  let orOUt = orGate.model([a, b]);
+  let andOut = andGate.model([nandOut, orOUt]);
+  return andOut;
 }
+```
+
+The function xor() takes the two inputs and uses the three boolean neuron gates to 
+produce an XOR output.
+
+```XOR output based on 3 gate OR, NAND, AND design:
+[ 0 | 0 ] == 0
+[ 0 | 1 ] == 1
+[ 1 | 0 ] == 1
+[ 1 | 1 ] == 0
+
 ```
