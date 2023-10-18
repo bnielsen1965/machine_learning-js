@@ -362,3 +362,155 @@ XOR output based on 3 gate OR, NAND, AND design:
 [ 1 | 1 ] == 0
 
 ```
+
+
+## XOR gate neural network
+
+An alternative to a multi-gate solution where multiple neurons, each trained to 
+act as a specific type of logic gate, we can in its place train a network of neurons to 
+perform the function of an XOR gate.
+
+The neural network is wiring is similar to the three gate design where two inputs are 
+connected to the inputs of two neurons and the output of those two neurons are then 
+connected to the inputs of a final neuron that will provide the gate output.
+
+Two new classes are created to associate the neurons in a neural network. The NeuronLayer 
+class which contains all the neurons in a network layer. And a NeuronNetwork class 
+that contains all the layers for the network.
+
+In this experiment the first layer contains an array of two random neurons with two inputs. 
+The second layer contains an array with a single random neuron, this will be the final 
+stage for output. And the neural network is constructed with an array of the layers.
+```javascript
+
+// first layer with two neurons
+let layer1 = new NeuronLayer([
+  new BooleanNeuron([Math.random(), Math.random()], Math.random()),
+  new BooleanNeuron([Math.random(), Math.random()], Math.random())
+]);
+
+// second layer with single neuron for final output
+let layer2 = new NeuronLayer([
+  new BooleanNeuron([Math.random(), Math.random()], Math.random())
+]);
+
+// create network from neuron layers
+let network = new NeuronNetwork([layer1, layer2]);
+```
+
+When the XOR data set is ran through this network of random neurons it will more than 
+likely fail the tests.
+```
+Untrained XOR output:
+In: [ 0 | 0 ] Out: 1,  expected 0 FAILURE
+In: [ 0 | 1 ] Out: 1,  expected 1 SUCCESS
+In: [ 1 | 0 ] Out: 1,  expected 1 SUCCESS
+In: [ 1 | 1 ] Out: 1,  expected 0 FAILURE
+
+```
+
+The training is similar to that of the single neurons in the gates experiment. A 
+training network is created to duplicate the model of the untrained XOR network with 
+the activation functions swapped out for a sigmoid method to enable a measure of the 
+error rate in the current model.
+
+```javascript
+// first training layer with two neurons
+let trainingLayer1 = new NeuronLayer([
+  new BooleanNeuron(layer1.neurons[0].weights, layer1.neurons[0].bias, BooleanNeuron.sigmoid),
+  new BooleanNeuron(layer1.neurons[1].weights, layer1.neurons[1].bias, BooleanNeuron.sigmoid)
+]);
+
+// second training layer with single neuron for final output
+let trainingLayer2 = new NeuronLayer([
+  new BooleanNeuron(layer2.neurons[0].weights, layer2.neurons[0].bias, BooleanNeuron.sigmoid)
+]);
+
+// create training network from neuron layers
+let trainingNetwork = new NeuronNetwork([trainingLayer1, trainingLayer2]);
+```
+
+The training neural network is then ran through a network traning method with the 
+XOR data set until the training has reached an accetable error rate or has ran the 
+maximum number of training runs.
+```javascript
+/*
+* train neuron using data set
+* @param {Object} neuron The neuron object to train.
+* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+* @param {Number} rate The learn rate used to adjust the weight on an input.
+* @param {Number} tweak Adjustment applied to the error.
+* @param {Number} runs The maximum number of training runs to attempt.
+* @param {Number} target The target error value for the model.
+*/
+function trainNetwork (network, dataSet, rate, tweak, runs, target) {
+  let error;
+  let count = 0;
+  while (++count < runs) {
+    // get current model error
+    error = BooleanTraining.calculateError(network, dataSet);
+    if (isNaN(error)) throw new Error(`Error is NaN!`);
+    // check if error target has been achieved
+    if (error < target) break;
+    // train each network layer
+    networkLoop:
+    for (const layer of network.layers) {
+      for (const neuron of layer.neurons) {
+
+    // get current model error
+    error = BooleanTraining.calculateError(network, dataSet);
+    if (isNaN(error)) throw new Error(`Error is NaN!`);
+    // check if error target has been achieved
+    if (error < target) break networkLoop;
+
+        // train each input weight
+        let trainWeights = neuron.weights.slice();
+        neuron.weights.forEach((weight, i) => {
+          let weightRecall = weight;
+          neuron.weights[i] += tweak;
+          let weightError = BooleanTraining.calculateError(network, dataSet);
+          trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
+          neuron.weights[i] = weightRecall;
+        });
+        // train neuron bias
+        let trainBias = neuron.bias;
+        let biasRecall = neuron.bias;
+        neuron.bias += tweak;
+        let biasError = BooleanTraining.calculateError(network, dataSet);
+        trainBias = biasRecall - rate * ((biasError - error) / tweak);
+        neuron.bias = biasRecall;
+
+        // apply training results
+        neuron.weights = trainWeights.slice();
+        neuron.bias = trainBias;
+
+      }
+    }
+
+    // validate error reduced
+    let adjustError = BooleanTraining.calculateError(network, dataSet);
+    if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
+    error = adjustError;
+  }
+  return { error, count };
+}
+```
+
+Once training is complete the weights and bias values of the training model are copied into the 
+XOR neural network. Now when the XOR data set is ran through the trained XOR neural network it 
+should pass all tests.
+```
+Trained neuron output...
+In: [ 0 | 0 ] Out: 0,  expected 0 SUCCESS
+In: [ 0 | 1 ] Out: 1,  expected 1 SUCCESS
+In: [ 1 | 0 ] Out: 1,  expected 1 SUCCESS
+In: [ 1 | 1 ] Out: 0,  expected 0 SUCCESS
+```
+
+### XOR neural network vs 3 gate XOR
+
+A comparison of the weights and bias values of the XOR neural network neurons to the trained 
+gate neurons from the 3 gate XOR design may provide some interesting results. The models in 
+most cases will be very different and the XOR neural network model may produce a different 
+model result from each run due to a random starting point, while the single gate models tend 
+to learn very similar models even though they also start from a random point.
