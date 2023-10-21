@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Neuron Gate</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      border: 1px solid black;
+    }
+    th {
+      border: 1px solid black;
+      padding: 4px;
+      background-color: #aaa;
+    }
+    td {
+      border: 1px solid black;
+      padding: 4px;
+      text-align: center;
+    }
+    tr:nth-child(even) {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>Neuron Gate</h1>
+  <svg width="650" height="350" style="background-color: #aaa;">
+
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       id="path288"
+       cx="323.79459"
+       cy="223.56174"
+       r="65.544632" />
+    <text
+       xml:space="preserve"
+       style="font-size:33.5447px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="323.81137"
+       y="235.5372"
+       id="text1010"><tspan
+         sodipodi:role="line"
+         id="tspan1008"
+         style="fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="323.81137"
+         y="235.5372">Σ</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle1172"
+       cx="323.79459"
+       cy="48.47139"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="323.51157"
+       y="54.897339"
+       id="text2632"><tspan
+         sodipodi:role="line"
+         id="tspanbias"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="323.51157"
+         y="54.897339">β</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle10032"
+       cx="162.4182"
+       cy="168.70464"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="163.85223"
+       y="175.34648"
+       id="text10036"><tspan
+         sodipodi:role="line"
+         id="tspanweight1"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="163.85223"
+         y="175.34648">ω1</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle10038"
+       cx="162.4182"
+       cy="276.76236"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="162.29555"
+       y="283.49857"
+       id="text10042"><tspan
+         sodipodi:role="line"
+         id="tspanweight2"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="162.29555"
+         y="283.49857">ω2</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle10044"
+       cx="488.8743"
+       cy="223.56174"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="487.58914"
+       y="229.28845"
+       id="text10048"><tspan
+         sodipodi:role="line"
+         id="tspan10046"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="487.58914"
+         y="229.28845">f(x)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="47.783344"
+       y="175.44083"
+       id="text10052"><tspan
+         sodipodi:role="line"
+         id="tspaninput1"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="47.783344"
+         y="175.44083">x1</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="46.226662"
+       y="283.5929"
+       id="text10056"><tspan
+         sodipodi:role="line"
+         id="tspaninput2"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="46.226662"
+         y="283.5929">x2</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.5;stroke-linecap:round"
+       x="598.69067"
+       y="226.35434"
+       id="text10060"><tspan
+         sodipodi:role="line"
+         id="tspanoutput"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="598.69067"
+         y="226.35434">y</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 64.714047,168.70463 H 116.45998"
+       id="path10107"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 64.714047,276.76235 H 116.45998"
+       id="path10449"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 203.21055,276.76235 50.22396,-19.78524"
+       id="path10451"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 203.21055,167.62851 50.22396,19.78524"
+       id="path10453"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 393.45304,223.56173 h 51.74594"
+       id="path10455"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 525.86185,223.56173 h 51.74594"
+       id="path10457"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 323.79458,94.19689 v 51.74594"
+       id="path10459"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+  </svg>
+
+  <hr>
+  
+  Test AND data set...<br>
+  <table>
+    <tr><th>x1</th><th>x2</th><th>y</th><th></th><th>Actual</th></tr>
+    <tr><td>0</td><td>0</td><td>0</td><td><button type="button" onclick="test(this, 0, 0, 0);">Test</button></td><td></td></tr>
+    <tr><td>0</td><td>1</td><td>0</td><td><button type="button" onclick="test(this, 0, 1, 0);">Test</button></td><td></td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td><button type="button" onclick="test(this, 1, 0, 0);">Test</button></td><td></td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td><button type="button" onclick="test(this, 1, 1, 1);">Test</button></td><td></td></tr>
+  </table>
+  <br>
+  <button type="button" onclick="train();">train</button>
+
+<script>
+
+// definition of 2 input AND gate
+const DataAND = [
+  { inputs: [0, 0], result: 0 },
+  { inputs: [0, 1], result: 0 },
+  { inputs: [1, 0], result: 0 },
+  { inputs: [1, 1], result: 1 }
+];
+
+// Target acceptable error rate for neuron model
+const ErrorTarget = 0.0001;
+
+// Maximum number of training runs to try before failure
+const MaxRuns = 400000;
+
+// learning rate applied to input weight to adjust for error
+const LearnRate = 0.1;
+
+// bias and error rate tweaks applied during training
+const Tweak = 0.001
+
+
+
+
+window.addEventListener("load", () => init());
+
+let data = DataAND;
+let gate;
+
+
+function init () {
+  // create an untrained random neuron to use as a boolean logic gate
+  gate = new BooleanNeuron([Math.random(), Math.random()], Math.random());
+}
+
+
+function test (element, x1, x2, y) {
+  let a = gate.model([x1, x2]);
+  displayNeuronValues(gate, x1, x2, a);
+  let sibling = element.parentElement.nextSibling;
+  sibling.innerHTML = a;
+  sibling.style.color = a != y ? "red" : "green";
+}
+
+
+function disableButtons (disable) {
+  let buttons = document.getElementsByTagName("button");
+  for (const button of buttons) {
+    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB", button)
+    button.disabled = disable;
+  }
+}
+
+function train () {
+  disableButtons(true);
+  console.log(`Training...`);
+
+  // show random neuron results
+  console.log("Untrained neuron output:");
+  BooleanTraining.showOutput(gate, data);
+  BooleanTraining.showModel(gate);
+
+  // create a duplicate training neuron with sigmoid activation so we get linear error results
+  let train_neuron = new BooleanNeuron(gate.weights, gate.bias, BooleanNeuron.sigmoid);
+
+  console.log("\nTrain neuron...");
+  console.log(`Initial neuron error ${BooleanTraining.calculateError(train_neuron, data)}.`);
+  let result = BooleanTraining.train(train_neuron, data, LearnRate, Tweak, MaxRuns, ErrorTarget);
+  console.log(`Trained neuron error ${result.error} in ${result.count} training runs.\n`);
+
+  // copy trained model values to the untrained neuron
+  gate.weights = train_neuron.weights.slice();
+  gate.bias = train_neuron.bias;
+
+  if (!BooleanTraining.test(gate, data)) console.log("Training failed, neuron does not produce expected output.");
+  console.log("Trained neuron output...");
+  BooleanTraining.showOutput(gate, data);
+  BooleanTraining.showModel(gate);
+  console.log("\n\n");
+  disableButtons(false);
+}
+
+
+function displayNeuronValues (neuron, x1, x2, y) {
+  setElementText("tspanweight1", Math.round(neuron.weights[0] * 100) / 100);
+  setElementText("tspanweight2", Math.round(neuron.weights[1] * 100) / 100);
+  setElementText("tspanbias", Math.round(neuron.bias * 100) / 100);
+  setElementText("tspaninput1", x1 === undefined ? "x1" : x1);
+  setElementText("tspaninput2", x2 === undefined ? "x2" : x2);
+  setElementText("tspanoutput", y === undefined ? "y" : y);
+}
+
+
+function setElementText (id, val) {
+  let element = document.getElementById(id);
+  if (!element) return;
+  element.innerHTML = val;
+}
+
+
+</script>
+
+
+<script>
+
+
+
+/*
+* The Neuron class provides the foundation of a machine learning neuron with a constructor
+* to define the model input weights, bias, and the output activation function and the model 
+* function to process inputs with the defined model and provide the output result.
+*/
+
+class Neuron {
+  /*
+  * Represents a single neuron
+  * @constructor
+  * @param {Number[]} inputWeights An array of initial input weights.
+  * @param {Number} bias An initial bias value.
+  * @param {function} activation The activation function to apply before output.
+  */
+  constructor (inputWeights, bias, activation) {
+    if (!inputWeights || !inputWeights.length) throw new Error("New neuron requires input weights.");
+    if (!Array.isArray(inputWeights)) throw new Error("Input weights must be an array of weights.");
+    this.activation = activation;
+    this.bias = bias || 0;
+    this.weights = inputWeights.slice();
+  }
+
+  /*
+  * Calculates neuron output from given inputs.
+  * @param {Number[]} inputs An array of neuron input values.
+  */
+  model (inputs) {
+    if (inputs.length != this.weights.length) throw new Error("Mismatch between number of data inputs and number of neuron inputs.");
+    let result = this.bias;
+    for (let i = 0; i < inputs.length; i++) result += inputs[i] * this.weights[i];
+    return this.activation ? this.activation(result) : result;
+  }
+}
+
+
+
+
+/*
+* The BooleanNeuron class extends the Neuron class by providing a predefined 
+* activation function that is used to ensure the neuron model output adheres 
+* to boolean values of 0 or 1.
+*/
+
+class BooleanNeuron extends Neuron {
+  /*
+  * @constructor
+  * @param {Number[]} inputWeights An array of initial input weights.
+  * @param {Number} bias An initial bias value.
+  * @param {function} [activation=BooleanNeuron.activation] The activation function 
+  *     can be overridden when creating a training neuron that requires a non-sigmoid
+  *     output for error calculations.
+  */
+  constructor (inputWeights, bias, activation) {
+    super (inputWeights, bias, activation || BooleanNeuron.activation);
+  }
+
+  /*
+  * The activation function uses round() to produce boolean values from the sigmoid.
+  * @param {Number} x The sumation of the bias, input and weight calculations.
+  */
+  static activation (x) {
+    return Math.round(BooleanNeuron.sigmoid(x));
+  }
+  
+  /*
+  * A sigmoid function is used to squash x value into the range of 0 to 1 where x = 0 returns 0.5.
+  * @param {Number} x The value to be squashed into the range from 0 to 1.
+  */
+  static sigmoid (x) {
+    return 1 / (1 + Math.exp(-1 * x));
+  }
+
+  // export the model definition values
+  getModel () {
+    return {
+      bias: this.bias,
+      weights: this.weights
+    };
+  }
+}
+
+
+
+
+class BooleanTraining {
+
+/*
+* train neuron using data set
+* @param {Object} neuron The neuron object to train.
+* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+* @param {Number} rate The learn rate used to adjust the weight on an input.
+* @param {Number} tweak Adjustment applied to the error.
+* @param {Number} runs The maximum number of training runs to attempt.
+* @param {Number} target The target error value for the model.
+*/
+static train (neuron, dataSet, rate, tweak, runs, target) {
+  let error;
+  let count = 0;
+  while (++count < runs) {
+    // get current model error
+    error = BooleanTraining.calculateError(neuron, dataSet);
+    if (isNaN(error)) throw new Error(`Error is NaN!`);
+    // check if error target has been achieved
+    if (error < target) break;
+    // train each input weight
+    let trainWeights = neuron.weights.slice();
+    neuron.weights.forEach((weight, i) => {
+      let weightRecall = weight;
+      neuron.weights[i] += tweak;
+      let weightError = BooleanTraining.calculateError(neuron, dataSet);
+      trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
+      neuron.weights[i] = weightRecall;
+    });
+    // train neuron bias
+    let trainBias = neuron.bias;
+    let biasRecall = neuron.bias;
+    neuron.bias += tweak;
+    let biasError = BooleanTraining.calculateError(neuron, dataSet);
+    trainBias = biasRecall - rate * ((biasError - error) / tweak);
+    neuron.bias = biasRecall;
+
+    // apply training results
+    neuron.weights = trainWeights.slice();
+    neuron.bias = trainBias;
+
+    // validate error reduced
+    let adjustError = BooleanTraining.calculateError(neuron, dataSet);
+    if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
+    error = adjustError;
+  }
+  return { error, count };
+}
+
+/*
+* quantify the error in the neuron model compared to training data set
+* @param {Object} neuron The neuron object to train.
+* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+*/
+static calculateError (neuron, dataSet) {
+  let error_val = 0;
+  for (const row of dataSet) {
+    let y = neuron.model(row.inputs);
+    error_val += Math.pow(y - row.result, 2);
+  }
+  return error_val / dataSet.length;
+}
+
+/*
+* test a neuron against a data set
+* @param {Object} neuron The neuron object to train.
+* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+*/
+static test (neuron, dataSet) {
+  let success = true;
+  for (const row of dataSet) if (neuron.model(row.inputs) !== row.result) success = false;
+  return success;
+}
+
+/*
+* show neuron output from data set
+* @param {Object} neuron The neuron object to train.
+* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+*/
+static showOutput (neuron, dataSet) {
+  for (const data of dataSet) {
+    let output = neuron.model(data.inputs);
+    console.log(`In: [ ${data.inputs.join(" | ")} ] Out: ${output},  expected ${data.result} ${data.result === output ? "SUCCESS" : "FAILURE"}`);
+  }
+}
+
+/*
+* show the boolean model values
+* @param {Object} neuron The neuron object to train.
+*/
+static showModel (neuron) {
+  let model = neuron.getModel();
+  console.log("Neuron Model:");
+  console.log(`  bias: ${model.bias}`);
+  console.log("  weights:");
+  neuron.weights.map((weight, i) => console.log(`    input ${i}: ${weight}`));
+}
+
+}
+</script>
+</body>
+</html>
