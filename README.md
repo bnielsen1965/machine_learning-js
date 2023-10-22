@@ -21,7 +21,7 @@ starting with a bias, summing the input values after multiplying by a weight tha
 input, and finally applying an activation method before presenting the neuron output.
 
 ```
-                              (neuron)
+                                  (neuron)
                  /-------------------------------------------\
                 /                                             \
                 |               \                             |
@@ -36,7 +36,7 @@ input, and finally applying an activation method before presenting the neuron ou
                  \-------------------------------------------/
 ```
 
-This simple neuron design is easily implemented in a Javascript module...
+This simple neuron design is easily implemented in the *neuron.mjs* Javascript module...
 
 *neuron.mjs*
 ```javascript
