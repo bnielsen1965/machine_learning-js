@@ -69,6 +69,7 @@ const Tweak = 0.001;
 // learned gate models will be stored in this array
 let gateModels = [];
 
+// process each training set
 TrainingSets.forEach(trainingSet => {
   console.log(`Training ${trainingSet.name}...`);
 
@@ -101,5 +102,6 @@ TrainingSets.forEach(trainingSet => {
   gateModels.push({ name: trainingSet.name, model: gate.getModel() });
 });
 
+// save the trained gate models
 FS.writeFileSync("gate_models.json", JSON.stringify(gateModels, null, 2));
 

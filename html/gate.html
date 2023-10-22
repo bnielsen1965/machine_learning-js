@@ -8,6 +8,9 @@
       border-collapse: collapse;
       border: 1px solid black;
     }
+    tr:nth-child(even) {
+      background-color: #eee;
+    }
     th {
       border: 1px solid black;
       padding: 4px;
@@ -18,8 +21,8 @@
       padding: 4px;
       text-align: center;
     }
-    tr:nth-child(even) {
-      background-color: #eee;
+    td input {
+      width: 2em;
     }
   </style>
 </head>
@@ -198,18 +201,25 @@
 
   <hr>
   
-  Test AND data set...<br>
+  Select a logic gate type:<br>
+  <button type="button" onclick="setDataSet('AND');">AND</button> <button type="button" onclick="setDataSet('NAND');">NAND</button> <button type="button" onclick="setDataSet('OR');">OR</button> <button type="button" onclick="setDataSet('NOR');">NOR</button><br>
+  <br>
   <table>
+    <caption>Gate Type: <span id="gatetype">...</span></caption>
     <tr><th>x1</th><th>x2</th><th>y</th><th></th><th>Actual</th></tr>
-    <tr><td>0</td><td>0</td><td>0</td><td><button type="button" onclick="test(this, 0, 0, 0);">Test</button></td><td></td></tr>
-    <tr><td>0</td><td>1</td><td>0</td><td><button type="button" onclick="test(this, 0, 1, 0);">Test</button></td><td></td></tr>
-    <tr><td>1</td><td>0</td><td>0</td><td><button type="button" onclick="test(this, 1, 0, 0);">Test</button></td><td></td></tr>
-    <tr><td>1</td><td>1</td><td>1</td><td><button type="button" onclick="test(this, 1, 1, 1);">Test</button></td><td></td></tr>
+    <tr><td><input id="x1-1"></td><td><input id="x2-1"></td><td><input id="y-1"></td><td><button type="button" onclick="test(1);">Test</button></td><td id="r-1"></td></tr>
+    <tr><td><input id="x1-2"></td><td><input id="x2-2"></td><td><input id="y-2"></td><td><button type="button" onclick="test(2);">Test</button></td><td id="r-2"></td></tr>
+    <tr><td><input id="x1-3"></td><td><input id="x2-3"></td><td><input id="y-3"></td><td><button type="button" onclick="test(3);">Test</button></td><td id="r-3"></td></tr>
+    <tr><td><input id="x1-4"></td><td><input id="x2-4"></td><td><input id="y-4"></td><td><button type="button" onclick="test(4);">Test</button></td><td id="r-4"></td></tr>
   </table>
   <br>
-  <button type="button" onclick="train();">train</button>
+  <button type="button" onclick="train();">train</button><br>
+  <span id="trainmessage"></span>
+
+
 
 <script>
+  // define logic gate data sets and training settings
 
 // definition of 2 input AND gate
 const DataAND = [
@@ -219,11 +229,43 @@ const DataAND = [
   { inputs: [1, 1], result: 1 }
 ];
 
+// definition of 2 input NAND gate
+const DataNAND = [
+  { inputs: [0, 0], result: 1 },
+  { inputs: [0, 1], result: 1 },
+  { inputs: [1, 0], result: 1 },
+  { inputs: [1, 1], result: 0 }
+];
+
+// definition of 2 input OR gate
+const DataOR = [
+  { inputs: [0, 0], result: 0 },
+  { inputs: [0, 1], result: 1 },
+  { inputs: [1, 0], result: 1 },
+  { inputs: [1, 1], result: 1 }
+];
+
+// definition of 2 input NOR gate
+const DataNOR = [
+  { inputs: [0, 0], result: 1 },
+  { inputs: [0, 1], result: 0 },
+  { inputs: [1, 0], result: 0 },
+  { inputs: [1, 1], result: 0 }
+];
+
+// array of defined training sets for logic gates
+const TrainingSets = [
+  { name: "AND", data: DataAND },
+  { name: "NAND", data: DataNAND },
+  { name: "OR", data: DataOR },
+  { name: "NOR", data: DataNOR }
+];
+
 // Target acceptable error rate for neuron model
 const ErrorTarget = 0.0001;
 
 // Maximum number of training runs to try before failure
-const MaxRuns = 400000;
+const MaxRuns = 1400000;
 
 // learning rate applied to input weight to adjust for error
 const LearnRate = 0.1;
@@ -231,49 +273,86 @@ const LearnRate = 0.1;
 // bias and error rate tweaks applied during training
 const Tweak = 0.001
 
+</script>
 
 
 
+<script>
+// initialize after page is loaded
 window.addEventListener("load", () => init());
 
-let data = DataAND;
-let gate;
+// declare global variables
+// let data;
+let gateNeuron;
 
-
+// application initialization method
 function init () {
+  setDataSet("AND");
+}
+
+// set the current data set
+function setDataSet(gateType) {
   // create an untrained random neuron to use as a boolean logic gate
-  gate = new BooleanNeuron([Math.random(), Math.random()], Math.random());
+  gateNeuron = new BooleanNeuron([Math.random(), Math.random()], Math.random());
+  for (const dataSet of TrainingSets) {
+    if (dataSet.name == gateType) {
+      document.getElementById("gatetype").innerHTML = gateType;
+      // data = dataSet.data;
+      dataSet.data.forEach((row, i) => {
+        document.getElementById(`x1-${i + 1}`).value = row.inputs[0];
+        document.getElementById(`x2-${i + 1}`).value = row.inputs[1];
+        document.getElementById(`y-${i + 1}`).value = row.result;
+        document.getElementById(`r-${i + 1}`).innerHTML = "";
+      });
+      return;
+    }
+  }
 }
 
-
-function test (element, x1, x2, y) {
-  let a = gate.model([x1, x2]);
-  displayNeuronValues(gate, x1, x2, a);
-  let sibling = element.parentElement.nextSibling;
-  sibling.innerHTML = a;
-  sibling.style.color = a != y ? "red" : "green";
+// test model against data row
+function test (rowNumber) {
+  let x1 = document.getElementById(`x1-${rowNumber}`).value;
+  let x2 = document.getElementById(`x2-${rowNumber}`).value;
+  let y = document.getElementById(`y-${rowNumber}`).value;
+  let a = gateNeuron.model([x1, x2]);
+  displayNeuronValues(gateNeuron, x1, x2, a);
+  document.getElementById(`r-${rowNumber}`).innerHTML = a;
+  document.getElementById(`r-${rowNumber}`).style.color = a != y ? "red" : "green";
 }
 
-
+// disable/enable all buttons
 function disableButtons (disable) {
   let buttons = document.getElementsByTagName("button");
   for (const button of buttons) {
-    console.log("BBBBBBBBBBBBBBBBBBBBBBBBBB", button)
     button.disabled = disable;
   }
 }
 
+// train the neuron
 function train () {
+  document.getElementById("trainmessage").innerHTML = "";
   disableButtons(true);
   console.log(`Training...`);
 
+  // build data set from inputs
+  let data = [];
+  for (let i = 1; i < 5; i++) {
+    data.push({
+      inputs: [
+        Number(document.getElementById(`x1-${i}`).value),
+        Number(document.getElementById(`x2-${i}`).value)
+      ],
+      result: Number(document.getElementById(`y-${i}`).value)
+    });
+  }
+
   // show random neuron results
   console.log("Untrained neuron output:");
-  BooleanTraining.showOutput(gate, data);
-  BooleanTraining.showModel(gate);
+  BooleanTraining.showOutput(gateNeuron, data);
+  BooleanTraining.showModel(gateNeuron);
 
   // create a duplicate training neuron with sigmoid activation so we get linear error results
-  let train_neuron = new BooleanNeuron(gate.weights, gate.bias, BooleanNeuron.sigmoid);
+  let train_neuron = new BooleanNeuron(gateNeuron.weights, gateNeuron.bias, BooleanNeuron.sigmoid);
 
   console.log("\nTrain neuron...");
   console.log(`Initial neuron error ${BooleanTraining.calculateError(train_neuron, data)}.`);
@@ -281,18 +360,21 @@ function train () {
   console.log(`Trained neuron error ${result.error} in ${result.count} training runs.\n`);
 
   // copy trained model values to the untrained neuron
-  gate.weights = train_neuron.weights.slice();
-  gate.bias = train_neuron.bias;
+  gateNeuron.weights = train_neuron.weights.slice();
+  gateNeuron.bias = train_neuron.bias;
 
-  if (!BooleanTraining.test(gate, data)) console.log("Training failed, neuron does not produce expected output.");
+  let message = "";
+  if (!BooleanTraining.test(gateNeuron, data)) message = "Training failed, neuron does not produce expected output.";
+  else message = "Training successful.";
+  document.getElementById("trainmessage").innerHTML = message;
   console.log("Trained neuron output...");
-  BooleanTraining.showOutput(gate, data);
-  BooleanTraining.showModel(gate);
+  BooleanTraining.showOutput(gateNeuron, data);
+  BooleanTraining.showModel(gateNeuron);
   console.log("\n\n");
   disableButtons(false);
 }
 
-
+// update svg with neuron model values
 function displayNeuronValues (neuron, x1, x2, y) {
   setElementText("tspanweight1", Math.round(neuron.weights[0] * 100) / 100);
   setElementText("tspanweight2", Math.round(neuron.weights[1] * 100) / 100);
@@ -313,8 +395,10 @@ function setElementText (id, val) {
 </script>
 
 
-<script>
 
+
+<script>
+// neuron class files copied into static web page
 
 
 /*
@@ -403,30 +487,92 @@ class BooleanNeuron extends Neuron {
 
 class BooleanTraining {
 
-/*
-* train neuron using data set
-* @param {Object} neuron The neuron object to train.
-* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
-* @param {Number} rate The learn rate used to adjust the weight on an input.
-* @param {Number} tweak Adjustment applied to the error.
-* @param {Number} runs The maximum number of training runs to attempt.
-* @param {Number} target The target error value for the model.
-*/
-static train (neuron, dataSet, rate, tweak, runs, target) {
-  let error;
-  let count = 0;
-  while (++count < runs) {
-    // get current model error
-    error = BooleanTraining.calculateError(neuron, dataSet);
-    if (isNaN(error)) throw new Error(`Error is NaN!`);
-    // check if error target has been achieved
-    if (error < target) break;
-    // train each input weight
+  /*
+  * train neuron using data set
+  * @param {Object} neuron The neuron object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  * @param {Number} rate The learn rate used to adjust the weight on an input.
+  * @param {Number} tweak Adjustment applied to the error.
+  * @param {Number} runs The maximum number of training runs to attempt.
+  * @param {Number} target The target error value for the model.
+  */
+  static train (neuron, dataSet, rate, tweak, runs, target) {
+    let error;
+    let count = 0;
+    while (++count < runs) {
+      // get current model error
+      error = BooleanTraining.calculateError(neuron, dataSet);
+      if (isNaN(error)) throw new Error(`Error is NaN!`);
+      // check if error target has been achieved
+      if (error < target) break;
+      // train each input weight
+      BooleanTraining.adjustWeightsBias(neuron, dataSet, rate, tweak, error);
+      // validate error reduced
+      let adjustError = BooleanTraining.calculateError(neuron, dataSet);
+      if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
+      error = adjustError;
+    }
+    return { error, count };
+  }
+
+
+  /*
+  * train neuron using data set
+  * @param {Object} network The neuron network object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  * @param {Number} rate The learn rate used to adjust the weight on an input.
+  * @param {Number} tweak Adjustment applied to the error.
+  * @param {Number} runs The maximum number of training runs to attempt.
+  * @param {Number} target The target error value for the model.
+  */
+  static trainNetwork (network, dataSet, rate, tweak, runs, target) {
+    let error;
+    let count = 0;
+    while (++count < runs) {
+      // get current model error
+      error = BooleanTraining.calculateError(network, dataSet);
+      if (isNaN(error)) throw new Error(`Error is NaN!`);
+      // check if error target has been achieved
+      if (error < target) break;
+      // train each network layer
+      networkLoop:
+      for (const layer of network.layers) {
+        for (const neuron of layer.neurons) {
+
+          // get current model error
+          error = BooleanTraining.calculateError(network, dataSet);
+          if (isNaN(error)) throw new Error(`Error is NaN!`);
+          // check if error target has been achieved
+          if (error < target) break networkLoop;
+          // train each input weight
+          BooleanTraining.adjustWeightsBias(neuron, dataSet, rate, tweak, error, network);
+        }
+      }
+
+      // validate error reduced
+      let adjustError = BooleanTraining.calculateError(network, dataSet);
+      if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
+      error = adjustError;
+    }
+    return { error, count };
+  }
+
+  /*
+  * adjust neuron weights and bias to reduce the error
+  * @param {Object} neuron The neuron object to adjust.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  * @param {Number} rate The learn rate used to adjust the weight on an input.
+  * @param {Number} tweak Adjustment applied to the error.
+  * @param {Number} error The current error value for the neuron/network.
+  * @param {Object} network (optional) The network object if adjusting a neuron inside a network.
+  */
+  static adjustWeightsBias (neuron, dataSet, rate, tweak, error, network) {
     let trainWeights = neuron.weights.slice();
     neuron.weights.forEach((weight, i) => {
       let weightRecall = weight;
       neuron.weights[i] += tweak;
-      let weightError = BooleanTraining.calculateError(neuron, dataSet);
+      // calculate neuron error
+      let weightError = BooleanTraining.calculateError(network || neuron, dataSet);
       trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
       neuron.weights[i] = weightRecall;
     });
@@ -434,72 +580,82 @@ static train (neuron, dataSet, rate, tweak, runs, target) {
     let trainBias = neuron.bias;
     let biasRecall = neuron.bias;
     neuron.bias += tweak;
-    let biasError = BooleanTraining.calculateError(neuron, dataSet);
+    // calculate neuron error
+    let biasError = BooleanTraining.calculateError(network || neuron, dataSet);
     trainBias = biasRecall - rate * ((biasError - error) / tweak);
     neuron.bias = biasRecall;
 
     // apply training results
     neuron.weights = trainWeights.slice();
     neuron.bias = trainBias;
-
-    // validate error reduced
-    let adjustError = BooleanTraining.calculateError(neuron, dataSet);
-    if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
-    error = adjustError;
   }
-  return { error, count };
-}
 
-/*
-* quantify the error in the neuron model compared to training data set
-* @param {Object} neuron The neuron object to train.
-* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
-*/
-static calculateError (neuron, dataSet) {
-  let error_val = 0;
-  for (const row of dataSet) {
-    let y = neuron.model(row.inputs);
-    error_val += Math.pow(y - row.result, 2);
+
+  /*
+  * quantify the error in the neuron model compared to training data set
+  * @param {Object} neuron The neuron object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  */
+  static calculateError (neuron, dataSet) {
+    let error_val = 0;
+    for (const row of dataSet) {
+      let y = neuron.model(row.inputs);
+      error_val += Math.pow(y - row.result, 2);
+    }
+    return error_val / dataSet.length;
   }
-  return error_val / dataSet.length;
-}
 
-/*
-* test a neuron against a data set
-* @param {Object} neuron The neuron object to train.
-* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
-*/
-static test (neuron, dataSet) {
-  let success = true;
-  for (const row of dataSet) if (neuron.model(row.inputs) !== row.result) success = false;
-  return success;
-}
+  /*
+  * test a neuron against a data set
+  * @param {Object} neuron The neuron object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  */
+  static test (neuron, dataSet) {
+    let success = true;
+    for (const row of dataSet) if (neuron.model(row.inputs) !== row.result) success = false;
+    return success;
+  }
 
-/*
-* show neuron output from data set
-* @param {Object} neuron The neuron object to train.
-* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
-*/
-static showOutput (neuron, dataSet) {
-  for (const data of dataSet) {
-    let output = neuron.model(data.inputs);
-    console.log(`In: [ ${data.inputs.join(" | ")} ] Out: ${output},  expected ${data.result} ${data.result === output ? "SUCCESS" : "FAILURE"}`);
+  /*
+  * show neuron output from data set
+  * @param {Object} neuron The neuron object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  */
+  static showOutput (neuron, dataSet) {
+    for (const data of dataSet) {
+      let output = neuron.model(data.inputs);
+      console.log(`In: [ ${data.inputs.join(" | ")} ] Out: ${output},  expected ${data.result} ${data.result === output ? "SUCCESS" : "FAILURE"}`);
+    }
+  }
+
+  /*
+  * show the boolean model values
+  * @param {Object} neuron The neuron object to train.
+  */
+  static showModel (neuron) {
+    let model = neuron.getModel();
+    console.log("Neuron Model:");
+    console.log(`  bias: ${model.bias}`);
+    console.log("  weights:");
+    neuron.weights.map((weight, i) => console.log(`    input ${i}: ${weight}`));
+  }
+
+  /*
+  * show the boolean model for a network of neurons
+  * @param {Object} network The NeuronNetwork object.
+  */
+  static showNetworkModel (network) {
+    console.log("Network model:");
+    network.layers.forEach((layer, i) => {
+      console.log(`  Layer ${i + 1}`);
+      layer.neurons.forEach((neuron, i) => {
+        console.log(`    Neuron ${i + 1}`);
+        BooleanTraining.showModel(neuron);
+      });
+    });
   }
 }
 
-/*
-* show the boolean model values
-* @param {Object} neuron The neuron object to train.
-*/
-static showModel (neuron) {
-  let model = neuron.getModel();
-  console.log("Neuron Model:");
-  console.log(`  bias: ${model.bias}`);
-  console.log("  weights:");
-  neuron.weights.map((weight, i) => console.log(`    input ${i}: ${weight}`));
-}
-
-}
 </script>
 </body>
 </html>
