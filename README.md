@@ -191,9 +191,10 @@ In: [ 1 | 1 ] Out: 1,  expected 1 SUCCESS
 ```
 
 For the training step a temporariy training boolean neuron is created using the weights and bias 
-values from the random untrained neuron. For this training neuron the activation function is specified 
-as the sigmoid function from the boolean neuron class. Training requires the non-boolean output to 
-calculate the error rate of the neuron's current weight and bias model.
+values from the random untrained neuron. In the training boolean neuron the boolean activation 
+function is overridden with the sigmoid function which returns a floating point value between 0 
+and 1 thus enabling a measure of the error between the expected output versus the actual output 
+of the neuron.
 
 The training function is provided with some conditions to assist in the training process. An 
 error target is used to tell the training function when the accuracy is close enough to stop 
@@ -237,6 +238,45 @@ the current neuron model.
   }
 ```
 
+If the error level in the training neuron is not at an acceptable level then the weights and bias
+of the training neuron are adjusted to reduce the error level. These adjustments are calculated 
+for each weight and the bias of the training neuron.
+
+```javascript
+/*
+* adjust neuron weights and bias to reduce the error
+* @param {Object} neuron The neuron object to adjust.
+* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+* @param {Number} rate The learn rate used to adjust the weight on an input.
+* @param {Number} tweak Adjustment applied to the error.
+* @param {Number} error The current error value for the neuron/network.
+* @param {Object} network (optional) The network object if adjusting a neuron inside a network.
+*/
+static adjustWeightsBias (neuron, dataSet, rate, tweak, error, network) {
+  let trainWeights = neuron.weights.slice();
+  neuron.weights.forEach((weight, i) => {
+    let weightRecall = weight;
+    neuron.weights[i] += tweak;
+    // calculate neuron error
+    let weightError = BooleanTraining.calculateError(network || neuron, dataSet);
+    trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
+    neuron.weights[i] = weightRecall;
+  });
+  // train neuron bias
+  let trainBias = neuron.bias;
+  let biasRecall = neuron.bias;
+  neuron.bias += tweak;
+  // calculate neuron error
+  let biasError = BooleanTraining.calculateError(network || neuron, dataSet);
+  trainBias = biasRecall - rate * ((biasError - error) / tweak);
+  neuron.bias = biasRecall;
+
+  // apply training results
+  neuron.weights = trainWeights.slice();
+  neuron.bias = trainBias;
+}
+```
+
 The training method iterates through multiple adjustments to the neuron's model until the error 
 calculation produces an acceptable error rate or the training steps reaches the maximum allowed 
 iterations.
@@ -261,26 +301,7 @@ iterations.
       // check if error target has been achieved
       if (error < target) break;
       // train each input weight
-      let trainWeights = neuron.weights.slice();
-      neuron.weights.forEach((weight, i) => {
-        let weightRecall = weight;
-        neuron.weights[i] += tweak;
-        let weightError = BooleanTraining.calculateError(neuron, dataSet);
-        trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
-        neuron.weights[i] = weightRecall;
-      });
-      // train neuron bias
-      let trainBias = neuron.bias;
-      let biasRecall = neuron.bias;
-      neuron.bias += tweak;
-      let biasError = BooleanTraining.calculateError(neuron, dataSet);
-      trainBias = biasRecall - rate * ((biasError - error) / tweak);
-      neuron.bias = biasRecall;
-
-      // apply training results
-      neuron.weights = trainWeights.slice();
-      neuron.bias = trainBias;
-
+      BooleanTraining.adjustWeightsBias(neuron, dataSet, rate, tweak, error);
       // validate error reduced
       let adjustError = BooleanTraining.calculateError(neuron, dataSet);
       if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
@@ -293,7 +314,8 @@ iterations.
 As each neuron is trained to operate as a logic gate the final results of the training will 
 be displayed and should show success when tested against the gate definition.
 
-```Training AND...
+```
+Training AND...
 
 Trained neuron output...
 In: [ 0 | 0 ] Out: 0,  expected 0 SUCCESS
@@ -370,9 +392,10 @@ An alternative to a multi-gate solution where multiple neurons, each trained to
 act as a specific type of logic gate, we can in its place train a network of neurons to 
 perform the function of an XOR gate.
 
-The neural network is wiring is similar to the three gate design where two inputs are 
-connected to the inputs of two neurons and the output of those two neurons are then 
-connected to the inputs of a final neuron that will provide the gate output.
+The neural network wiring is similar to the three gate design where two inputs are 
+connected to the inputs of two neurons in the first layer and the output of those two 
+neurons are then connected to the inputs of a single neuron in the final layer. The 
+output of the neuron in the final layer is the gate output.
 
 Two new classes are created to associate the neurons in a neural network. The NeuronLayer 
 class which contains all the neurons in a network layer. And a NeuronNetwork class 
@@ -432,68 +455,50 @@ let trainingNetwork = new NeuronNetwork([trainingLayer1, trainingLayer2]);
 
 The training neural network is then ran through a network traning method with the 
 XOR data set until the training has reached an accetable error rate or has ran the 
-maximum number of training runs.
+maximum number of training runs. The network training method is similar to the training 
+method for a single neuron except the network method must interate through all layers 
+and all neurons.
+
 ```javascript
-/*
-* train neuron using data set
-* @param {Object} neuron The neuron object to train.
-* @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
-* @param {Number} rate The learn rate used to adjust the weight on an input.
-* @param {Number} tweak Adjustment applied to the error.
-* @param {Number} runs The maximum number of training runs to attempt.
-* @param {Number} target The target error value for the model.
-*/
-function trainNetwork (network, dataSet, rate, tweak, runs, target) {
-  let error;
-  let count = 0;
-  while (++count < runs) {
-    // get current model error
-    error = BooleanTraining.calculateError(network, dataSet);
-    if (isNaN(error)) throw new Error(`Error is NaN!`);
-    // check if error target has been achieved
-    if (error < target) break;
-    // train each network layer
-    networkLoop:
-    for (const layer of network.layers) {
-      for (const neuron of layer.neurons) {
-
-    // get current model error
-    error = BooleanTraining.calculateError(network, dataSet);
-    if (isNaN(error)) throw new Error(`Error is NaN!`);
-    // check if error target has been achieved
-    if (error < target) break networkLoop;
-
-        // train each input weight
-        let trainWeights = neuron.weights.slice();
-        neuron.weights.forEach((weight, i) => {
-          let weightRecall = weight;
-          neuron.weights[i] += tweak;
-          let weightError = BooleanTraining.calculateError(network, dataSet);
-          trainWeights[i] = weightRecall - rate * ((weightError - error) / tweak);
-          neuron.weights[i] = weightRecall;
-        });
-        // train neuron bias
-        let trainBias = neuron.bias;
-        let biasRecall = neuron.bias;
-        neuron.bias += tweak;
-        let biasError = BooleanTraining.calculateError(network, dataSet);
-        trainBias = biasRecall - rate * ((biasError - error) / tweak);
-        neuron.bias = biasRecall;
-
-        // apply training results
-        neuron.weights = trainWeights.slice();
-        neuron.bias = trainBias;
-
+  /*
+  * train neuron using data set
+  * @param {Object} network The neuron network object to train.
+  * @param {Object[]} dataSet An array of objects with the neuron input values and expected output result.
+  * @param {Number} rate The learn rate used to adjust the weight on an input.
+  * @param {Number} tweak Adjustment applied to the error.
+  * @param {Number} runs The maximum number of training runs to attempt.
+  * @param {Number} target The target error value for the model.
+  */
+  static trainNetwork (network, dataSet, rate, tweak, runs, target) {
+    let error;
+    let count = 0;
+    while (++count < runs) {
+      // get current model error
+      error = BooleanTraining.calculateError(network, dataSet);
+      if (isNaN(error)) throw new Error(`Error is NaN!`);
+      // check if error target has been achieved
+      if (error < target) break;
+      // train each network layer
+      networkLoop:
+      for (const layer of network.layers) {
+        for (const neuron of layer.neurons) {
+          // get current model error
+          error = BooleanTraining.calculateError(network, dataSet);
+          if (isNaN(error)) throw new Error(`Error is NaN!`);
+          // check if error target has been achieved
+          if (error < target) break networkLoop;
+          // train each input weight
+          BooleanTraining.adjustWeightsBias(neuron, dataSet, rate, tweak, error, network);
+        }
       }
-    }
 
-    // validate error reduced
-    let adjustError = BooleanTraining.calculateError(network, dataSet);
-    if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
-    error = adjustError;
+      // validate error reduced
+      let adjustError = BooleanTraining.calculateError(network, dataSet);
+      if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
+      error = adjustError;
+    }
+    return { error, count };
   }
-  return { error, count };
-}
 ```
 
 Once training is complete the weights and bias values of the training model are copied into the 
@@ -507,6 +512,7 @@ In: [ 1 | 0 ] Out: 1,  expected 1 SUCCESS
 In: [ 1 | 1 ] Out: 0,  expected 0 SUCCESS
 ```
 
+
 ### XOR neural network vs 3 gate XOR
 
 A comparison of the weights and bias values of the XOR neural network neurons to the trained 
@@ -514,3 +520,11 @@ gate neurons from the 3 gate XOR design may provide some interesting results. Th
 most cases will be very different and the XOR neural network model may produce a different 
 model result from each run due to a random starting point, while the single gate models tend 
 to learn very similar models even though they also start from a random point.
+
+
+# Web Browser Neuron Experiments
+
+The javascript code for the neuron experiments can be executed in a web browser as well. The 
+html directory in the project includes html files that can be loaded directly in a web browser 
+and includes testing and training capabilities as well as a visual display of the neuron 
+function.
