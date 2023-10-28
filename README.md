@@ -528,3 +528,27 @@ The javascript code for the neuron experiments can be executed in a web browser 
 html directory in the project includes html files that can be loaded directly in a web browser 
 and includes testing and training capabilities as well as a visual display of the neuron 
 function.
+
+
+## Web Browser Gates Experiment
+
+Open the html/gates.html file in a web browser and it will diplay a page with a single 
+neuron diagram and a table that can be loaded with various logic gate definitions.
+
+The test buttons in the table can be used to test the logic on the current gate model. 
+When a test is executed it will show the actual result from the output of the neuron and 
+the diagram will be updated to show the test input values, the output value, and the 
+current model weights and bias values.
+
+The train button is used to train the neron on the data set in the logic gate definition 
+table. After training completes the test buttons can again be used to test the trained 
+model and the learned model weights and bias will be displayed in the neuron diagram.
+
+
+## Web Browser XOR Experiment
+
+An XOR logic gate cannot be learned by a single neuron, so teh XOR experimente web page 
+will display a network diagram with two layers and three neurons.
+
+The data table will be loaded with the XOR definition and the test buttons can be used 
+to test the network model while the train button is used to train the network model.

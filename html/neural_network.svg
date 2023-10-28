@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="4400"
+   height="2480"
+   viewBox="0 0 1164.1665 656.16658"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="TriangleStart"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       markerWidth="5.3244081"
+       markerHeight="6.155385"
+       viewBox="0 0 5.3244081 6.1553851"
+       preserveAspectRatio="xMidYMid">
+      <path
+         transform="scale(0.5)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 5.77,0 -2.88,5 V -5 Z"
+         id="path135" />
+    </marker>
+  </defs>
+  <g
+     id="layer1">
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       id="path288"
+       cx="326.83853"
+       cy="228.12752"
+       r="65.544632" />
+    <text
+       xml:space="preserve"
+       style="font-size:33.5447px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="326.85532"
+       y="240.10298"
+       id="text1010"><tspan
+         id="tspan1008"
+         style="fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="326.85532"
+         y="240.10298">Σ</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle1172"
+       cx="326.83853"
+       cy="53.037178"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="326.55551"
+       y="59.463127"
+       id="text2632"><tspan
+         id="tspan2630"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="326.55551"
+         y="59.463127">β</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle10032"
+       cx="165.46214"
+       cy="173.27042"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="166.89618"
+       y="179.91226"
+       id="text10036"><tspan
+         id="tspan10034"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="166.89618"
+         y="179.91226">ω1</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle10038"
+       cx="165.46214"
+       cy="281.32816"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="165.33949"
+       y="288.06436"
+       id="text10042"><tspan
+         id="tspan10040"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="165.33949"
+         y="288.06436">ω2</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle10044"
+       cx="491.91824"
+       cy="228.12752"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="490.63309"
+       y="233.85423"
+       id="text10048"><tspan
+         id="tspan10046"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="490.63309"
+         y="233.85423">f(x)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="50.827286"
+       y="180.00661"
+       id="text10052"><tspan
+         id="tspan10050"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="50.827286"
+         y="180.00661">x1</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 67.757988,173.27042 H 119.50392"
+       id="path10107" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 68.698014,173.62852 138.03574,470.54099"
+       id="path10449" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 206.25449,281.32814 256.47845,261.5429"
+       id="path10451" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 206.25449,172.1943 50.22396,19.78524"
+       id="path10453" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 396.49698,228.12752 h 51.74594"
+       id="path10455" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 528.90579,228.12752 105.90917,82.54282"
+       id="path10457" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 326.83852,98.762677 V 150.50862"
+       id="path10459" />
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       id="circle443"
+       cx="832.12244"
+       cy="389.45316"
+       r="65.544632" />
+    <text
+       xml:space="preserve"
+       style="font-size:33.5447px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="832.13922"
+       y="401.42862"
+       id="text447"><tspan
+         id="tspan445"
+         style="fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="832.13922"
+         y="401.42862">Σ</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle449"
+       cx="832.12244"
+       cy="214.36281"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="831.83942"
+       y="220.78876"
+       id="text453"><tspan
+         id="tspan451"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="831.83942"
+         y="220.78876">β</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle455"
+       cx="670.74603"
+       cy="334.59604"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="672.18011"
+       y="341.23788"
+       id="text459"><tspan
+         id="tspan457"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="672.18011"
+         y="341.23788">ω1</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle461"
+       cx="670.74603"
+       cy="442.65378"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="670.62341"
+       y="449.38998"
+       id="text465"><tspan
+         id="tspan463"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="670.62341"
+         y="449.38998">ω2</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle467"
+       cx="997.20215"
+       cy="389.45316"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="995.91699"
+       y="395.17987"
+       id="text471"><tspan
+         id="tspan469"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="995.91699"
+         y="395.17987">f(x)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="1107.0186"
+       y="392.24576"
+       id="text483"><tspan
+         id="tspan481"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="1107.0186"
+         y="392.24576">y</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 711.53845,442.65376 50.22396,-19.78524"
+       id="path489" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 711.53845,333.51992 50.22396,19.78524"
+       id="path491" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 901.78096,389.45314 h 51.7459"
+       id="path493" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 1034.1897,389.45314 h 51.746"
+       id="path495" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 832.12248,260.0883 v 51.74594"
+       id="path497" />
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       id="circle499"
+       cx="329.88235"
+       cy="552.3006"
+       r="65.544632" />
+    <text
+       xml:space="preserve"
+       style="font-size:33.5447px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="329.89914"
+       y="564.27606"
+       id="text503"><tspan
+         id="tspan501"
+         style="fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="329.89914"
+         y="564.27606">Σ</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle505"
+       cx="329.88235"
+       cy="377.21027"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="329.59933"
+       y="383.63623"
+       id="text509"><tspan
+         id="tspan507"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="329.59933"
+         y="383.63623">β</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle511"
+       cx="168.50597"
+       cy="497.44351"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="169.94"
+       y="504.08536"
+       id="text515"><tspan
+         id="tspan513"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="169.94"
+         y="504.08536">ω1</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle517"
+       cx="168.50597"
+       cy="605.50122"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="168.38332"
+       y="612.23743"
+       id="text521"><tspan
+         id="tspan519"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="168.38332"
+         y="612.23743">ω2</tspan></text>
+    <circle
+       style="fill:#69f9ff;fill-opacity:1;stroke:#000000;stroke-width:1.48574;stroke-linecap:round;stroke-dasharray:none"
+       id="circle523"
+       cx="494.96207"
+       cy="552.3006"
+       r="33.774952" />
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="493.67691"
+       y="558.02734"
+       id="text527"><tspan
+         id="tspan525"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="493.67691"
+         y="558.02734">f(x)</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:18.8689px;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1.48573;stroke-linecap:round"
+       x="52.314419"
+       y="612.33179"
+       id="text535"><tspan
+         id="tspan533"
+         style="font-size:18.8689px;fill:#000000;fill-opacity:1;stroke-width:1.48574"
+         x="52.314419"
+         y="612.33179">x2</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 71.518011,605.50129 65.219579,-295.883"
+       id="path541" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 70.801804,605.50123 H 122.54774"
+       id="path543" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 209.29831,605.50123 50.22396,-19.78524"
+       id="path545" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 209.29831,496.36739 50.22396,19.78524"
+       id="path547" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 399.5408,552.30061 h 51.74594"
+       id="path549" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="M 531.94961,552.30061 634.00913,466.93776"
+       id="path551" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.486;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#TriangleStart)"
+       d="m 329.88234,422.93577 v 51.74594"
+       id="path553" />
+  </g>
+</svg>
