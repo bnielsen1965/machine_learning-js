@@ -70,7 +70,7 @@ const Tweak = 0.001;
 let gateModels = [];
 
 // process each training set
-TrainingSets.forEach(trainingSet => {
+for (const trainingSet of TrainingSets) {
   console.log(`Training ${trainingSet.name}...`);
 
   // create an untrained random neuron to use as a boolean logic gate
@@ -86,7 +86,7 @@ TrainingSets.forEach(trainingSet => {
   
   console.log("\nTrain neuron...");
   console.log(`Initial neuron error ${BooleanTraining.calculateError(train_neuron, trainingSet.data)}.`);
-  let result = BooleanTraining.train(train_neuron, trainingSet.data, LearnRate, Tweak, MaxRuns, ErrorTarget);
+  let result = await BooleanTraining.train(train_neuron, trainingSet.data, LearnRate, Tweak, MaxRuns, ErrorTarget);
   console.log(`Trained neuron error ${result.error} in ${result.count} training runs.\n`);
 
   // copy trained model values to the untrained neuron
@@ -100,7 +100,7 @@ TrainingSets.forEach(trainingSet => {
   console.log("\n\n");
 
   gateModels.push({ name: trainingSet.name, model: gate.getModel() });
-});
+}
 
 // save the trained gate models
 FS.writeFileSync("gate_models.json", JSON.stringify(gateModels, null, 2));

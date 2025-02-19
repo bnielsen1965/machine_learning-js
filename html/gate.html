@@ -212,8 +212,16 @@
     <tr><td><input id="x1-3"></td><td><input id="x2-3"></td><td><input id="y-3"></td><td><button type="button" onclick="test(3);">Test</button></td><td id="r-3"></td></tr>
     <tr><td><input id="x1-4"></td><td><input id="x2-4"></td><td><input id="y-4"></td><td><button type="button" onclick="test(4);">Test</button></td><td id="r-4"></td></tr>
   </table>
+  <hr>
+  <span style="font-family: monospace;">Error Target:</span> <input id="errortarget" value="0.0001" title="Training error target value."><br>
+  <span style="font-family: monospace;">Maximum Runs:</span> <input id="maxruns" value="1400000" title="Maximum number of training runs."><br>
+  <span style="font-family: monospace;">Learn Rate:</span> <input id="learnrate" value="0.1" title="Learning rate applied to input weigth to adjust for error"><br>
+  <span style="font-family: monospace;">Tweak Rate:</span> <input id="tweakrate" value="0.001" title="Bias and error rate tweaks applied during training."><br>
   <br>
   <button type="button" onclick="train();">train</button><br>
+  <br>
+  <span style="font-family: monospace;">  Error:</span> <input id="error" readonly><br>
+  <span style="font-family: monospace;">Count:</span> <input id="count" readonly><br>
   <span id="trainmessage"></span>
 
 
@@ -297,7 +305,6 @@ function setDataSet(gateType) {
   for (const dataSet of TrainingSets) {
     if (dataSet.name == gateType) {
       document.getElementById("gatetype").innerHTML = gateType;
-      // data = dataSet.data;
       dataSet.data.forEach((row, i) => {
         document.getElementById(`x1-${i + 1}`).value = row.inputs[0];
         document.getElementById(`x2-${i + 1}`).value = row.inputs[1];
@@ -329,7 +336,7 @@ function disableButtons (disable) {
 }
 
 // train the neuron
-function train () {
+async function train () {
   document.getElementById("trainmessage").innerHTML = "";
   disableButtons(true);
   console.log(`Training...`);
@@ -353,10 +360,24 @@ function train () {
 
   // create a duplicate training neuron with sigmoid activation so we get linear error results
   let train_neuron = new BooleanNeuron(gateNeuron.weights, gateNeuron.bias, BooleanNeuron.sigmoid);
-
   console.log("\nTrain neuron...");
   console.log(`Initial neuron error ${BooleanTraining.calculateError(train_neuron, data)}.`);
-  let result = BooleanTraining.train(train_neuron, data, LearnRate, Tweak, MaxRuns, ErrorTarget);
+  let result = await BooleanTraining.train(
+    train_neuron, 
+    data, 
+    Number(getInputValue("learnrate")) || LearnRate, 
+    Number(getInputValue("tweakrate")) || Tweak, 
+    Number(getInputValue("maxruns")) || MaxRuns, 
+    Number(getInputValue("errortarget")) || ErrorTarget, 
+    (neuron, count, error) => {
+      displayNeuronParameters(neuron);
+      setInputValue("error", error);
+      setInputValue("count", count);
+    }
+  );
+  displayNeuronParameters(train_neuron);
+  setInputValue("error", result.error);
+  setInputValue("count", result.count);
   console.log(`Trained neuron error ${result.error} in ${result.count} training runs.\n`);
 
   // copy trained model values to the untrained neuron
@@ -376,12 +397,17 @@ function train () {
 
 // update svg with neuron model values
 function displayNeuronValues (neuron, x1, x2, y) {
-  setElementText("tspanweight1", Math.round(neuron.weights[0] * 100) / 100);
-  setElementText("tspanweight2", Math.round(neuron.weights[1] * 100) / 100);
-  setElementText("tspanbias", Math.round(neuron.bias * 100) / 100);
+  displayNeuronParameters(neuron);
   setElementText("tspaninput1", x1 === undefined ? "x1" : x1);
   setElementText("tspaninput2", x2 === undefined ? "x2" : x2);
   setElementText("tspanoutput", y === undefined ? "y" : y);
+}
+
+// update svg with neuron parameters
+function displayNeuronParameters (neuron) {
+  setElementText("tspanweight1", Math.round(neuron.weights[0] * 100) / 100);
+  setElementText("tspanweight2", Math.round(neuron.weights[1] * 100) / 100);
+  setElementText("tspanbias", Math.round(neuron.bias * 100) / 100);
 }
 
 
@@ -389,6 +415,18 @@ function setElementText (id, val) {
   let element = document.getElementById(id);
   if (!element) return;
   element.innerHTML = val;
+}
+
+function setInputValue (id, val) {
+  let element = document.getElementById(id);
+  if (!element) return;
+  element.value = val;
+}
+
+function getInputValue (id) {
+  let element = document.getElementById(id);
+  if (!element) return;
+  return element.value;
 }
 
 
@@ -496,7 +534,7 @@ class BooleanTraining {
   * @param {Number} runs The maximum number of training runs to attempt.
   * @param {Number} target The target error value for the model.
   */
-  static train (neuron, dataSet, rate, tweak, runs, target) {
+  static async train (neuron, dataSet, rate, tweak, runs, target, progress) {
     let error;
     let count = 0;
     while (++count < runs) {
@@ -511,8 +549,18 @@ class BooleanTraining {
       let adjustError = BooleanTraining.calculateError(neuron, dataSet);
       if (adjustError > error) console.log(`Adjustment failed! ${adjustError} > ${error}`)
       error = adjustError;
+      if (progress && typeof progress == "function" && !(count % 1000)) {
+        progress(neuron, count, error);
+        await BooleanTraining.delay(10);
+      }
     }
     return { error, count };
+  }
+
+  static delay (ms) {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, ms);
+    });
   }
 
 
